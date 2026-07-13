@@ -42,6 +42,6 @@
 - GitHub Pages 배포 URL: `(./https://sonjehyun123-maker.github.io/Codyssey-B4-1/)`
 
 ## 스크린샷
-- 데스크톱: `(배포 후 스크린샷 첨부)`
-- 모바일: `(배포 후 스크린샷 첨부)`
-- 다크 모드: `(배포 후 스크린샷 첨부)`
+- 데스크톱: ![데스크톱](./images/image1.png)
+- 모바일: ![모바일](./images/image2.png)
+- 라이트모드 ![라이트 모드](./images/image3.png)
