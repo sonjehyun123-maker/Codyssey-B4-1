@@ -1,6 +1,3 @@
-/* ============================================
-   DESIGN TOKENS
-   ============================================ */
 :root {
   --bg: #FFFFFF;
   --surface: #FFFFFF;
@@ -31,9 +28,6 @@
   --shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.5);
 }
 
-/* ============================================
-   RESET & BASE
-   ============================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -57,8 +51,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   margin: 0 auto;
   padding: 0 24px;
 }
-
-.accent { color: var(--accent); }
 
 .section-title {
   font-family: var(--font-display);
@@ -86,9 +78,6 @@ section { padding: 96px 0; }
   transform: translateY(0);
 }
 
-/* ============================================
-   BUTTONS
-   ============================================ */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -96,7 +85,7 @@ section { padding: 96px 0; }
   font-weight: 600;
   font-family: var(--font-display);
   font-size: 0.9rem;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  transition: box-shadow var(--transition), background var(--transition);
 }
 .btn--primary {
   background: var(--accent);
@@ -110,9 +99,6 @@ section { padding: 96px 0; }
 }
 .btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ============================================
-   HEADER / NAV
-   ============================================ */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -188,9 +174,6 @@ section { padding: 96px 0; }
 .nav__burger.active span:nth-child(2) { opacity: 0; }
 .nav__burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ============================================
-   HERO
-   ============================================ */
 .hero {
   padding-top: calc(var(--header-h) + 64px);
   padding-bottom: 64px;
@@ -222,9 +205,6 @@ section { padding: 96px 0; }
 }
 .hero__grid { max-width: 640px; }
 
-/* ============================================
-   ABOUT
-   ============================================ */
 .about__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -254,9 +234,6 @@ section { padding: 96px 0; }
 .about__facts li { color: var(--muted); display: flex; gap: 10px; align-items: flex-start; }
 .about__facts i { color: var(--accent); width: 18px; margin-top: 3px; }
 
-/* ============================================
-   SKILLS
-   ============================================ */
 .skills__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -268,33 +245,12 @@ section { padding: 96px 0; }
   border-radius: var(--radius);
   padding: 28px 22px;
   box-shadow: var(--shadow);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: box-shadow var(--transition), border-color var(--transition);
 }
 .skill-card:hover { box-shadow: var(--shadow-hover); border-color: var(--text); }
 .skill-card i { font-size: 1.5rem; color: var(--accent); margin-bottom: 14px; }
 .skill-card h3 { font-family: var(--font-display); font-size: 1rem; margin-bottom: 8px; }
 .skill-card p { color: var(--muted); font-size: 0.9rem; }
-
-/* ============================================
-   PROJECTS
-   ============================================ */
-.projects__filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-.filter-btn {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  color: var(--muted);
-  transition: all var(--transition);
-}
-.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-.filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 .projects__status {
   color: var(--muted);
@@ -332,7 +288,7 @@ section { padding: 96px 0; }
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: box-shadow var(--transition), border-color var(--transition);
   display: flex;
   flex-direction: column;
 }
@@ -365,9 +321,6 @@ section { padding: 96px 0; }
 }
 .project-card__link:hover { text-decoration: underline; }
 
-/* ============================================
-   CONTACT
-   ============================================ */
 .contact__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -416,9 +369,6 @@ section { padding: 96px 0; }
   min-height: 1em;
 }
 
-/* ============================================
-   FOOTER
-   ============================================ */
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 32px 0;
@@ -436,9 +386,6 @@ section { padding: 96px 0; }
 .footer__links a { transition: color var(--transition); }
 .footer__links a:hover { color: var(--accent); }
 
-/* ============================================
-   SCROLL TOP BUTTON
-   ============================================ */
 .scroll-top {
   position: fixed;
   right: 24px;
@@ -459,9 +406,7 @@ section { padding: 96px 0; }
 }
 .scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-/* ============================================
-   RESPONSIVE — mobile first, breakpoints 768 / 1024
-   ============================================ */
+/* breakpoints: 768 / 1024 */
 @media (max-width: 767px) {
   .nav__menu {
     position: fixed;
