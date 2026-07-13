@@ -1,6 +1,4 @@
-// ============================================
 // 1) 다크 모드: 상태 → 전체 화면 스타일 변경 (localStorage 유지)
-// ============================================
 const root = document.documentElement;
 const themeToggle = document.querySelector('#theme-toggle');
 const themeIcon = themeToggle.querySelector('i');
@@ -28,9 +26,7 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', next);
 });
 
-// ============================================
 // 2) 햄버거 메뉴 토글
-// ============================================
 const burger = document.querySelector('#burger');
 const navMenu = document.querySelector('#nav-menu');
 
@@ -48,9 +44,9 @@ document.querySelectorAll('.nav__link').forEach((link) => {
   });
 });
 
-// ============================================
+
 // 3) 스크롤 이벤트: 헤더 배경 변경 + 스크롤 탑 버튼 표시
-// ============================================
+
 const header = document.querySelector('#site-header');
 const scrollTopBtn = document.querySelector('#scroll-top');
 
@@ -67,9 +63,7 @@ scrollTopBtn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ============================================
 // 4) 스크롤 애니메이션 (Intersection Observer)
-// ============================================
 const REVEAL_THRESHOLD = 0.2;
 
 const revealObserver = new IntersectionObserver(
@@ -86,9 +80,7 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 
-// ============================================
 // 5) 폼 유효성 검사: 입력 → 상태 변경 → 에러 메시지 표시/숨김
-// ============================================
 const form = document.querySelector('#contact-form');
 const successMsg = document.querySelector('#form-success');
 
@@ -140,9 +132,9 @@ form.addEventListener('submit', (event) => {
   ['name', 'email', 'message'].forEach((fieldId) => setFieldError(fieldId, ''));
 });
 
-// ============================================
+
 // 6) GitHub API 연동: 호출 → 로딩/성공/에러 상태 → Projects 렌더링
-// ============================================
+
 const GITHUB_USERNAME = 'sonjehyun123-maker';
 const statusEl = document.querySelector('#projects-status');
 const gridEl = document.querySelector('#projects-grid');
