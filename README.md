@@ -39,7 +39,7 @@
 - `js/main.js`의 `GITHUB_USERNAME` 상수를 본인 GitHub 아이디로 설정하면 됩니다. (현재: `sonjehyun123-maker`)
 
 ## 배포
-- GitHub Pages 배포 URL: `(배포 후 이곳에 URL을 기재하세요)`
+- GitHub Pages 배포 URL: `(./https://sonjehyun123-maker.github.io/Codyssey-B4-1/)`
 
 ## 스크린샷
 - 데스크톱: `(배포 후 스크린샷 첨부)`
