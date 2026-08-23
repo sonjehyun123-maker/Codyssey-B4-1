@@ -7,7 +7,7 @@ const navMenu = document.querySelector('#navMenu');
 const themeToggle = document.querySelector('#themeToggle');
 const scrollTopBtn = document.querySelector('#scrollTop');
 
-// 이벤트: 스크롤 → 상태: 헤더 배경 / 탑버튼 노출 → 렌더링
+// 이벤트: 스크롤 → 상태: 헤더 배경 / 탑버튼 노출 → 렌더링 
 const handleScroll = () => {
   const y = window.scrollY;
   header.classList.toggle('scrolled', y > 60);

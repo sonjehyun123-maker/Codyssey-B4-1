@@ -328,7 +328,7 @@ section { padding: var(--space-5) 0; }
 .error-msg { color: var(--red-alert); font-size: 0.72rem; margin-top: 4px; min-height: 1em; }
 .success-msg { color: var(--accent); font-size: 0.8rem; margin-top: var(--space-2); }
 
-/* Footer */
+/* Footer */ 
 .site-footer {
   border-top: 1px solid var(--green-deep);
   padding: var(--space-3) 0;
