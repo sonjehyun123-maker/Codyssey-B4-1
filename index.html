@@ -1,381 +1,130 @@
-const GITHUB_USERNAME = 'sonjehyun123-maker';
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>재현 — jaehyun@portfolio</title>
+<meta name="description" content="재현의 개발 포트폴리오. Mini Git, Mini Redis 등 시스템 프로젝트와 기술 스택을 소개합니다.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="crt-overlay" aria-hidden="true"></div>
 
-const header = document.querySelector('#siteHeader');
-const hamburger = document.querySelector('#hamburger');
-const navMenu = document.querySelector('#navMenu');
-const themeToggle = document.querySelector('#themeToggle');
-const scrollTopBtn = document.querySelector('#scrollTop');
-
-// 이벤트: 스크롤 → 상태: 헤더 배경 / 탑버튼 노출 → 렌더링
-const handleScroll = () => {
-  const y = window.scrollY;
-  header.classList.toggle('scrolled', y > 60);
-  scrollTopBtn.classList.toggle('visible', y > 300);
-};
-window.addEventListener('scroll', handleScroll);
-handleScroll();
-
-hamburger.addEventListener('click', () => {
-  const isActive = navMenu.classList.toggle('active');
-  hamburger.classList.toggle('active', isActive);
-  hamburger.setAttribute('aria-expanded', String(isActive));
-});
-
-navMenu.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', (event) => {
-    const targetId = link.getAttribute('href');
-    const target = document.querySelector(targetId);
-    if (!target) return;
-    event.preventDefault();
-    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    navMenu.classList.remove('active');
-    hamburger.classList.remove('active');
-    hamburger.setAttribute('aria-expanded', 'false');
-  });
-});
-
-scrollTopBtn.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-});
-
-// 이벤트: 테마 토글 클릭 → 상태: data-theme 순환(그린→앰버→라이트) → 렌더링: 전체 색상 전환
-const THEME_KEY = 'portfolio-theme';
-const THEME_ORDER = ['green', 'light'];
-const THEME_LABEL = { green: '[ GRN ]', light: '[ PPR ]' };
-
-const applyTheme = (theme) => {
-  if (theme === 'green') {
-    document.documentElement.removeAttribute('data-theme');
-  } else {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-  themeToggle.textContent = THEME_LABEL[theme];
-  themeToggle.setAttribute('aria-label', `테마 전환 (현재: ${theme})`);
-};
-
-applyTheme(localStorage.getItem(THEME_KEY) || 'green');
-
-themeToggle.addEventListener('click', () => {
-  const current = localStorage.getItem(THEME_KEY) || 'green';
-  const next = THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length];
-  applyTheme(next);
-  localStorage.setItem(THEME_KEY, next);
-});
-
-// 스크롤 애니메이션: threshold 0.2
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.2 }
-);
-document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
-
-// 부팅 로그 타이핑 효과
-const bootLines = [
-  '> booting jaehyun_os v2.6 ...',
-  '> loading profile: 재현',
-  '> role: CS undergraduate @ 안양대학교',
-  '> status: [ONLINE] building things that work_',
-];
-
-const typeBootLog = async () => {
-  const el = document.querySelector('#bootLog');
-  if (prefersReducedMotion) {
-    el.innerHTML = bootLines.map((line) => `<span class="done">${line}</span>`).join('<br>');
-    return;
-  }
-  for (const line of bootLines) {
-    let shown = '';
-    for (const char of line) {
-      shown += char;
-      el.innerHTML = shown;
-      await new Promise((resolve) => setTimeout(resolve, 18));
-    }
-    el.innerHTML += '<br>';
-    el.dataset.log = (el.dataset.log || '') + line + '\n';
-  }
-};
-typeBootLog();
-
-// GitHub API 연동: 로딩 → 성공/에러/빈 상태 → 렌더링
-const projectsContainer = document.querySelector('#projectsContainer');
-
-const renderProjectCard = ({ name, description, html_url, stargazers_count, language }) => `
-  <article class="project-card">
-    <h3>&gt; ${name}</h3>
-    <p>${description ?? '설명이 등록되지 않은 저장소입니다.'}</p>
-    <div class="project-meta">
-      <span>★ ${stargazers_count}</span>
-      <span>${language ?? 'N/A'}</span>
-      <a href="${html_url}" target="_blank" rel="noopener">open →</a>
+<header class="site-header" id="siteHeader">
+  <div class="container nav-bar">
+    <a href="#hero" class="logo">jaehyun@portfolio:~$</a>
+    <nav>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#about">~/about</a></li>
+        <li><a href="#skills">~/skills</a></li>
+        <li><a href="#projects">~/projects</a></li>
+        <li><a href="#contact">~/contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-controls">
+      <button class="theme-toggle" id="themeToggle" aria-label="테마 전환 (현재: green)">[ GRN ]</button>
+      <button class="hamburger" id="hamburger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </article>
-`;
+  </div>
+</header>
 
-const loadProjects = async () => {
-  projectsContainer.innerHTML = '<div class="state-box"><span class="blink-cursor">로딩 중</span></div>';
-  try {
-    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const repos = await response.json();
-    const { length } = repos;
-    if (length === 0) {
-      projectsContainer.innerHTML = '<div class="state-box">표시할 프로젝트가 없습니다.</div>';
-      return;
-    }
-    const cards = repos
-      .filter(({ fork }) => !fork)
-      .map(renderProjectCard)
-      .join('');
-    projectsContainer.innerHTML = `<div class="projects-grid">${cards}</div>`;
-  } catch (error) {
-    projectsContainer.innerHTML = `
-      <div class="state-box error">
-        프로젝트를 불러올 수 없습니다. (${error.message})
-        <br><button class="btn retry-btn" id="retryBtn">[ retry ]</button>
+<main>
+  <section class="hero" id="hero">
+    <div class="container">
+      <p class="boot-log" id="bootLog" aria-live="polite"></p>
+      <h1 class="hero-title">재현<br>SOFTWARE ENGINEER</h1>
+      <p class="hero-sub">아키텍처는 직접 설계하고, 구현은 위임한 뒤 완전히 이해할 때까지 통합하는 개발자. 시스템 프로그래밍과 자료구조를 밑바닥부터 다시 쌓는 걸 좋아합니다.</p>
+      <div class="cta-group">
+        <a href="#projects" class="btn">[ ./view_projects ]</a>
+        <a href="#contact" class="btn">[ ./contact ]</a>
       </div>
-    `;
-    document.querySelector('#retryBtn').addEventListener('click', loadProjects);
-  }
-};
-loadProjects();
-
-// 폼: 입력 → 유효성 상태 → 에러 메시지 표시/숨김
-const form = document.querySelector('#contactForm');
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const setError = (fieldId, message) => {
-  document.querySelector(`#${fieldId}Error`).textContent = message;
-};
-
-const validateField = (fieldId, value) => {
-  if (!value.trim()) {
-    setError(fieldId, '# error: 필수 입력 항목입니다.');
-    return false;
-  }
-  if (fieldId === 'email' && !emailPattern.test(value)) {
-    setError(fieldId, '# error: 이메일 형식이 올바르지 않습니다.');
-    return false;
-  }
-  setError(fieldId, '');
-  return true;
-};
-
-['name', 'email', 'message'].forEach((fieldId) => {
-  const field = document.querySelector(`#${fieldId}`);
-  field.addEventListener('input', () => validateField(fieldId, field.value));
-});
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const { name, email, message } = Object.fromEntries(new FormData(form));
-  const results = [
-    validateField('name', name),
-    validateField('email', email),
-    validateField('message', message),
-  ];
-  const successEl = document.querySelector('#formSuccess');
-  if (results.every(Boolean)) {
-    successEl.textContent = `> message_sent.log ✓  ${name}님, 메시지가 준비됐습니다.`;
-    form.reset();
-  } else {
-    successEl.textContent = '';
-  }
-});const GITHUB_USERNAME = 'sonjehyun123-maker';
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-const header = document.querySelector('#siteHeader');
-const hamburger = document.querySelector('#hamburger');
-const navMenu = document.querySelector('#navMenu');
-const themeToggle = document.querySelector('#themeToggle');
-const scrollTopBtn = document.querySelector('#scrollTop');
-
-// 이벤트: 스크롤 → 상태: 헤더 배경 / 탑버튼 노출 → 렌더링
-const handleScroll = () => {
-  const y = window.scrollY;
-  header.classList.toggle('scrolled', y > 60);
-  scrollTopBtn.classList.toggle('visible', y > 300);
-};
-window.addEventListener('scroll', handleScroll);
-handleScroll();
-
-hamburger.addEventListener('click', () => {
-  const isActive = navMenu.classList.toggle('active');
-  hamburger.classList.toggle('active', isActive);
-  hamburger.setAttribute('aria-expanded', String(isActive));
-});
-
-navMenu.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', (event) => {
-    const targetId = link.getAttribute('href');
-    const target = document.querySelector(targetId);
-    if (!target) return;
-    event.preventDefault();
-    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    navMenu.classList.remove('active');
-    hamburger.classList.remove('active');
-    hamburger.setAttribute('aria-expanded', 'false');
-  });
-});
-
-scrollTopBtn.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-});
-
-// 이벤트: 테마 토글 클릭 → 상태: data-theme 순환(그린→앰버→라이트) → 렌더링: 전체 색상 전환
-const THEME_KEY = 'portfolio-theme';
-const THEME_ORDER = ['green', 'light'];
-const THEME_LABEL = { green: '[ GRN ]', light: '[ PPR ]' };
-
-const applyTheme = (theme) => {
-  if (theme === 'green') {
-    document.documentElement.removeAttribute('data-theme');
-  } else {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-  themeToggle.textContent = THEME_LABEL[theme];
-  themeToggle.setAttribute('aria-label', `테마 전환 (현재: ${theme})`);
-};
-
-applyTheme(localStorage.getItem(THEME_KEY) || 'green');
-
-themeToggle.addEventListener('click', () => {
-  const current = localStorage.getItem(THEME_KEY) || 'green';
-  const next = THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length];
-  applyTheme(next);
-  localStorage.setItem(THEME_KEY, next);
-});
-
-// 스크롤 애니메이션: threshold 0.2
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.2 }
-);
-document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
-
-// 부팅 로그 타이핑 효과
-const bootLines = [
-  '> booting jaehyun_os v2.6 ...',
-  '> loading profile: 재현',
-  '> role: CS undergraduate @ 안양대학교',
-  '> status: [ONLINE] building things that work_',
-];
-
-const typeBootLog = async () => {
-  const el = document.querySelector('#bootLog');
-  if (prefersReducedMotion) {
-    el.innerHTML = bootLines.map((line) => `<span class="done">${line}</span>`).join('<br>');
-    return;
-  }
-  for (const line of bootLines) {
-    let shown = '';
-    for (const char of line) {
-      shown += char;
-      el.innerHTML = shown;
-      await new Promise((resolve) => setTimeout(resolve, 18));
-    }
-    el.innerHTML += '<br>';
-    el.dataset.log = (el.dataset.log || '') + line + '\n';
-  }
-};
-typeBootLog();
-
-// GitHub API 연동: 로딩 → 성공/에러/빈 상태 → 렌더링
-const projectsContainer = document.querySelector('#projectsContainer');
-
-const renderProjectCard = ({ name, description, html_url, stargazers_count, language }) => `
-  <article class="project-card">
-    <h3>&gt; ${name}</h3>
-    <p>${description ?? '설명이 등록되지 않은 저장소입니다.'}</p>
-    <div class="project-meta">
-      <span>★ ${stargazers_count}</span>
-      <span>${language ?? 'N/A'}</span>
-      <a href="${html_url}" target="_blank" rel="noopener">open →</a>
     </div>
-  </article>
-`;
+  </section>
 
-const loadProjects = async () => {
-  projectsContainer.innerHTML = '<div class="state-box"><span class="blink-cursor">로딩 중</span></div>';
-  try {
-    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const repos = await response.json();
-    const { length } = repos;
-    if (length === 0) {
-      projectsContainer.innerHTML = '<div class="state-box">표시할 프로젝트가 없습니다.</div>';
-      return;
-    }
-    const cards = repos
-      .filter(({ fork }) => !fork)
-      .map(renderProjectCard)
-      .join('');
-    projectsContainer.innerHTML = `<div class="projects-grid">${cards}</div>`;
-  } catch (error) {
-    projectsContainer.innerHTML = `
-      <div class="state-box error">
-        프로젝트를 불러올 수 없습니다. (${error.message})
-        <br><button class="btn retry-btn" id="retryBtn">[ retry ]</button>
+  <section id="about">
+    <div class="container about-grid reveal">
+      <div class="about-photo">
+        <img src="images/avatar-placeholder.svg" alt="재현의 프로필 사진 플레이스홀더 — 실제 사진으로 교체 예정">
       </div>
-    `;
-    document.querySelector('#retryBtn').addEventListener('click', loadProjects);
-  }
-};
-loadProjects();
+      <div class="terminal-block">
+        <p class="section-label">$ cat about.txt</p>
+        <h2 class="section-title" style="border:none;padding:0;margin-bottom:12px;">About</h2>
+        <p>안양대학교 컴퓨터공학과 2학년, Codyssey AI All-in-One 프로그램 참여 중입니다.</p>
+        <p style="margin-top:12px;">Mini Redis(더블 링크드 리스트 + 체이닝 해시맵 + 최소힙 기반 LRU)와 Mini Git(SHA-1 콘텐츠 주소 저장소 + BFS 그래프 순회) 같은 시스템 프로젝트를 파이썬 빌트인 없이 밑바닥부터 구현하며 자료구조를 체득하고 있습니다.</p>
+        <p style="margin-top:12px;">장기적으로는 개발자에서 창업자로 이어지는 길을 그리고 있습니다.</p>
+      </div>
+    </div>
+  </section>
 
-// 폼: 입력 → 유효성 상태 → 에러 메시지 표시/숨김
-const form = document.querySelector('#contactForm');
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  <section id="skills">
+    <div class="container reveal">
+      <p class="section-label">$ pip list --installed</p>
+      <h2 class="section-title">Skills</h2>
+      <table class="skills-table">
+        <caption>설치된 기술 패키지 목록</caption>
+        <thead>
+          <tr><th>package</th><th>category</th><th>status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>python</td><td>language</td><td class="pkg-status">[installed]</td></tr>
+          <tr><td>c / c++</td><td>language</td><td class="pkg-status">[installed]</td></tr>
+          <tr><td>linux-cli</td><td>systems</td><td class="pkg-status">[installed]</td></tr>
+          <tr><td>docker</td><td>infra</td><td class="pkg-status">[installed]</td></tr>
+          <tr><td>postgresql</td><td>data</td><td class="pkg-status">[installed]</td></tr>
+          <tr><td>html / css / js</td><td>web</td><td class="pkg-status">[installed]</td></tr>
+          <tr><td>flutter</td><td>web</td><td class="pkg-status">[learning...]</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-const setError = (fieldId, message) => {
-  document.querySelector(`#${fieldId}Error`).textContent = message;
-};
+  <section id="projects">
+    <div class="container reveal">
+      <p class="section-label">$ curl api.github.com/users/sonjehyun123-maker/repos</p>
+      <h2 class="section-title">Projects</h2>
+      <div id="projectsContainer">
+        <div class="state-box" id="projectsLoading">
+          <span class="blink-cursor">로딩 중</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-const validateField = (fieldId, value) => {
-  if (!value.trim()) {
-    setError(fieldId, '# error: 필수 입력 항목입니다.');
-    return false;
-  }
-  if (fieldId === 'email' && !emailPattern.test(value)) {
-    setError(fieldId, '# error: 이메일 형식이 올바르지 않습니다.');
-    return false;
-  }
-  setError(fieldId, '');
-  return true;
-};
+  <section id="contact">
+    <div class="container reveal">
+      <p class="section-label">$ ./contact.sh</p>
+      <h2 class="section-title">Contact</h2>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="name">name&gt;</label>
+          <input type="text" id="name" name="name">
+          <p class="error-msg" id="nameError"></p>
+        </div>
+        <div class="form-group">
+          <label for="email">email&gt;</label>
+          <input type="email" id="email" name="email">
+          <p class="error-msg" id="emailError"></p>
+        </div>
+        <div class="form-group">
+          <label for="message">message&gt;</label>
+          <textarea id="message" name="message" rows="5"></textarea>
+          <p class="error-msg" id="messageError"></p>
+        </div>
+        <button type="submit" class="btn">[ send.sh ]</button>
+        <p class="success-msg" id="formSuccess" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
 
-['name', 'email', 'message'].forEach((fieldId) => {
-  const field = document.querySelector(`#${fieldId}`);
-  field.addEventListener('input', () => validateField(fieldId, field.value));
-});
+<footer class="site-footer">
+  <p>// © 2026 재현 — <a href="https://github.com/sonjehyun123-maker" target="_blank" rel="noopener">github</a> · <a href="mailto:sonjehyun123@gmail.com">mailto</a></p>
+</footer>
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const { name, email, message } = Object.fromEntries(new FormData(form));
-  const results = [
-    validateField('name', name),
-    validateField('email', email),
-    validateField('message', message),
-  ];
-  const successEl = document.querySelector('#formSuccess');
-  if (results.every(Boolean)) {
-    successEl.textContent = `> message_sent.log ✓  ${name}님, 메시지가 준비됐습니다.`;
-    form.reset();
-  } else {
-    successEl.textContent = '';
-  }
-});
+<button class="scroll-top" id="scrollTop" aria-label="맨 위로 이동">↑</button>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
