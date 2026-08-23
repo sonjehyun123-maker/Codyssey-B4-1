@@ -122,7 +122,7 @@ const renderProjectCard = ({ name, description, html_url, stargazers_count, lang
 const loadProjects = async () => {
   projectsContainer.innerHTML = '<div class="state-box"><span class="blink-cursor">로딩 중</span></div>';
   try {
-    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12`);
+    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=8`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const repos = await response.json();
     const { length } = repos;
