@@ -4,7 +4,7 @@
 CRT 터미널(모노톤 인광) 컨셉으로 디자인했습니다.
 
 ## 배포
-- 배포 URL: `TODO — GitHub Pages 배포 후 채워넣기`
+- 배포 URL: https://sonjehyun123-maker.github.io/Codyssey-B4-1/
 - 저장소: https://github.com/sonjehyun123-maker
 
 ## 사용 기술
@@ -47,3 +47,5 @@ npx serve .
 ├── js/main.js
 └── images/avatar-placeholder.svg
 ```
+
+## 스크린샷
