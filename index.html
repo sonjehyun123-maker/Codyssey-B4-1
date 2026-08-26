@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>재현 — jaehyun@portfolio</title>
-<meta name="description" content="재현의 개발 포트폴리오. 시스템 프로젝트와 기술 스택을 소개합니다.">
+<meta name="description" content="재현의 개발 포트폴리오 — 소프트웨어 엔지니어">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -46,13 +46,14 @@
   <section id="about">
     <div class="container about-grid reveal">
       <div class="about-photo">
-        <img src="images/image.png" alt="재현의 프로필 사진 플레이스홀더 — 실제 사진으로 교체 예정">
+        <img src="images/image.png" alt="재현의 프로필 사진" id="avatarImg">
       </div>
       <div class="terminal-block">
         <p class="section-label">$ cat about.txt</p>
-        <h2 class="section-title" style="border:none;padding:0;margin-bottom:12px;">About</h2>
+        <h2 class="section-title about-title">About</h2>
         <p>컴퓨터공학과 2학년, Codyssey AI All-in-One 프로그램 참여 중입니다.</p>
-        <p>시스템 프로그래밍과 데이터베이스에 관심이 많으며, 다양한 프로젝트를 통해 실무 경험을 쌓고 있습니다.</p>
+        <p class="about-intro">저는 소프트웨어 엔지니어로서, 문제 해결과 창의적인 아이디어를 통해 세상을 더 나은 방향으로 이끌고자 합니다. </p>
+        <p>다양한 기술 스택을 활용하여 효율적이고 확장 가능한 솔루션을 개발하는 것을 목표로 하고 있습니다.</p>
       </div>
     </div>
   </section>
@@ -84,7 +85,6 @@
       <p class="section-label">$ curl api.github.com/users/sonjehyun123-maker/repos</p>
       <h2 class="section-title">Projects</h2>
       <div id="projectsContainer">
-
         <div class="state-box" id="projectsLoading">
           <span class="blink-cursor">로딩 중</span>
         </div>

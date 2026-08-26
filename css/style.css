@@ -198,6 +198,12 @@ section { padding: var(--space-5) 0; }
   border-left: 3px solid var(--accent);
   padding-left: var(--space-2);
 }
+.section-title--plain {
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-1);
+}
+.terminal-block p + p { margin-top: var(--space-1); }
 
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -277,6 +283,14 @@ section { padding: var(--space-5) 0; }
   padding: var(--space-3);
 }
 .terminal-block .prompt { color: var(--green-dim); font-size: 0.75rem; margin-bottom: var(--space-1); }
+.about-title {
+  border: none;
+  padding: 0;
+  margin-bottom: 12px;
+}
+.about-intro {
+  margin-top: 12px;
+}
 
 @media (min-width: 768px) {
   .about-grid { grid-template-columns: 220px 1fr; }
