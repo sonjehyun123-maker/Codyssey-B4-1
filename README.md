@@ -122,7 +122,7 @@ const loadProjects = async () => {
 ## 스크린샷
 | 데스크톱 | 모바일 | 앰버 모드 |
 |---|---|---|
-| `TODO` | `TODO` | `TODO` |
+|![](images/image2.png) | ![](images/image4.png) | ![](images/image3.png) |
 
 ## 폴더 구조
 ```
@@ -130,5 +130,5 @@ const loadProjects = async () => {
 ├── index.html
 ├── css/style.css
 ├── js/main.js
-└── images/avatar-placeholder.svg
+└── images/image.svg
 ```
