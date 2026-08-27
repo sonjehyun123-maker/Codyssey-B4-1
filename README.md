@@ -168,3 +168,17 @@ btn.addEventListener('click', b); // a, b 둘 다 실행됨
 ├── js/main.js
 └── images/image.svg
 ```
+
+
+## 에러 처리 (F12-console)
+- 표시 프로젝트 X
+```
+STATE.projectsStatus = 'empty';
+renderProjects();
+```
+- 로딩 중 
+```
+STATE.projectsStatus = 'loading';
+renderProjects();
+
+```
